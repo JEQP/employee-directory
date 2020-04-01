@@ -1,0 +1,19 @@
+.wrapper {
+    height: 400px;
+    background-color: aqua;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: bolder;
+
+}
+
+.tagline {
+font-size: large;
+font-weight: bold;
+}
