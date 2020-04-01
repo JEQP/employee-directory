@@ -3,11 +3,11 @@ import "./style.css";
 
 function SiteHead() {
     return (
-<div class = "wrapper">
-    <div class = "title">
+<div className = "wrapper">
+    <div className = "title">
 Employee Directory
     </div>
-    <div class = "tagline">
+    <div className = "tagline">
 All Relevant Information on All Employees, All the Time
     </div>
 </div>

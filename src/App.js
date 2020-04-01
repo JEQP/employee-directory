@@ -13,7 +13,9 @@ import SiteHead from './components/SiteHead';
 class App extends React.Component {
 
   state = {
-    employees: []
+    employees: [],
+    searchTerm: "t",
+    filteredEmployees: []
   };
 
   componentDidMount() {
@@ -26,11 +28,23 @@ class App extends React.Component {
           const entry = res.data.results;
           employees.push(entry);
           this.setState({ employees });
-          this.consEmp();
+          this.state.employees.length > 9 &&
+          console.log("employees: ", this.state.employees);
+          this.searchEmployees();
         })
+
     }
+
   }
 
+  searchEmployees = () => {
+    this.setState({
+      filteredEmployees: this.state.employees.filter((item) => {
+        return item[0].name.first.includes(this.state.searchTerm) || item[0].name.last.includes(this.state.searchTerm);
+      })
+    });
+    console.log("filteredList: ", this.state.filteredEmployees);
+  }
 
 
   consEmp = () => {
@@ -45,14 +59,21 @@ class App extends React.Component {
     return (
       <div className="App">
         <SiteHead />
-        <Navbar />
+        {/* <Navbar /> */}
         <ListHeader />
         {/* // the code below means the stuff in the p tag will only run once the array is longer than 0, ie has an entry. 
         // The previous problem of undefined was because of asynchronicity - this code was being run before the api call had data in the state. 
         // to traverse arrays of arrays use square brackets without periods. */}
 
         { // lets jsx know this is javascript
-          this.state.employees.length > 9 &&
+
+
+          
+
+          // this.state.employees.sort(function(a, b) {
+          //   return a.name.last.localeCompare(b.name.last);
+          // }) && 
+
           this.state.employees.map((item, index) => (
             //When calling components they must be in <>
             //The component requires props, and these must all be passed in as indicated below.
