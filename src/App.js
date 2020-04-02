@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 // import employees from "./employees.json";
 import API from './utils/API';
@@ -14,7 +13,7 @@ class App extends React.Component {
 
   state = {
     employees: [],
-    searchTerm: "t",
+    searchTerm: "",
     filteredEmployees: []
   };
 
@@ -32,9 +31,7 @@ class App extends React.Component {
           console.log("employees: ", this.state.employees);
           this.searchEmployees();
         })
-
     }
-
   }
 
   searchEmployees = () => {
@@ -44,22 +41,44 @@ class App extends React.Component {
       })
     });
     console.log("filteredList: ", this.state.filteredEmployees);
+    this.forceUpdate();
   }
 
+  handleInputChange = event => {
+    
+    // Updating the input's state
+    this.setState({
+      searchTerm: event.target.value
+    });
+  };
 
-  consEmp = () => {
-    console.log("consEmp run");
-    // console.log(JSON.stringify(this.state));
-    console.log(this.state);
+  handleFormSubmit = event => {
 
-  }
+    event.preventDefault();
+    this.setState({
+      searchTerm: event.target.value
+    })
+    this.searchEmployees();
+
+  };
 
   render() {
-    // console.log(this.state.employees);
+
     return (
       <div className="App">
         <SiteHead />
         {/* <Navbar /> */}
+        <form className="form">
+                    <input
+                        value={this.state.searchTerm}
+                        name="searchTerm"
+                        onChange={this.handleInputChange}
+                        type="text"
+                        placeholder="Search"
+                    />
+
+                    <button onClick={this.handleFormSubmit}>Submit</button>
+                </form>
         <ListHeader />
         {/* // the code below means the stuff in the p tag will only run once the array is longer than 0, ie has an entry. 
         // The previous problem of undefined was because of asynchronicity - this code was being run before the api call had data in the state. 
@@ -67,23 +86,16 @@ class App extends React.Component {
 
         { // lets jsx know this is javascript
 
-
-          
-
-          // this.state.employees.sort(function(a, b) {
-          //   return a.name.last.localeCompare(b.name.last);
-          // }) && 
-
-          this.state.employees.map((item, index) => (
+          this.state.filteredEmployees.map((item, index) => (
             //When calling components they must be in <>
             //The component requires props, and these must all be passed in as indicated below.
             <Card
-              image={this.state.employees[index][0].picture.large}
-              first={this.state.employees[index][0].name.first}
-              last={this.state.employees[index][0].name.last}
-              title={this.state.employees[index][0].name.title}
-              gender={this.state.employees[index][0].gender}
-              email={this.state.employees[index][0].email}
+              image={this.state.filteredEmployees[index][0].picture.large}
+              first={this.state.filteredEmployees[index][0].name.first}
+              last={this.state.filteredEmployees[index][0].name.last}
+              title={this.state.filteredEmployees[index][0].name.title}
+              gender={this.state.filteredEmployees[index][0].gender}
+              email={this.state.filteredEmployees[index][0].email}
             />
 
           ))
@@ -92,8 +104,6 @@ class App extends React.Component {
       </div>
     );
   }
-
 }
-
 
 export default App;
