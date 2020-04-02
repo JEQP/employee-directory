@@ -14,7 +14,8 @@ class App extends React.Component {
   state = {
     employees: [],
     searchTerm: "",
-    filteredEmployees: []
+    filteredEmployees: [],
+    filteredEmployessUpdated: false
   };
 
   componentDidMount() {
@@ -28,8 +29,8 @@ class App extends React.Component {
           employees.push(entry);
           this.setState({ employees });
           this.state.employees.length > 9 &&
-          console.log("employees: ", this.state.employees);
           this.searchEmployees();
+          // console.log("employees: ", this.state.employees);
         })
     }
   }
@@ -41,11 +42,14 @@ class App extends React.Component {
       })
     });
     console.log("filteredList: ", this.state.filteredEmployees);
+    this.setState({
+      filteredEmployessUpdated: true
+    })
     this.forceUpdate();
   }
 
   handleInputChange = event => {
-    
+
     // Updating the input's state
     this.setState({
       searchTerm: event.target.value
@@ -69,37 +73,24 @@ class App extends React.Component {
         <SiteHead />
         {/* <Navbar /> */}
         <form className="form">
-                    <input
-                        value={this.state.searchTerm}
-                        name="searchTerm"
-                        onChange={this.handleInputChange}
-                        type="text"
-                        placeholder="Search"
-                    />
+          <input
+            value={this.state.searchTerm}
+            name="searchTerm"
+            onChange={this.handleInputChange}
+            type="text"
+            placeholder="Search"
+          />
 
-                    <button onClick={this.handleFormSubmit}>Submit</button>
-                </form>
-        <ListHeader />
-        {/* // the code below means the stuff in the p tag will only run once the array is longer than 0, ie has an entry. 
-        // The previous problem of undefined was because of asynchronicity - this code was being run before the api call had data in the state. 
-        // to traverse arrays of arrays use square brackets without periods. */}
+          <button onClick={this.handleFormSubmit}>Submit</button>
+        </form>
 
-        { // lets jsx know this is javascript
-
-          this.state.filteredEmployees.map((item, index) => (
-            //When calling components they must be in <>
-            //The component requires props, and these must all be passed in as indicated below.
-            <Card
-              image={this.state.filteredEmployees[index][0].picture.large}
-              first={this.state.filteredEmployees[index][0].name.first}
-              last={this.state.filteredEmployees[index][0].name.last}
-              title={this.state.filteredEmployees[index][0].name.title}
-              gender={this.state.filteredEmployees[index][0].gender}
-              email={this.state.filteredEmployees[index][0].email}
-            />
-
-          ))
+        {console.log("filteredEmployees in app: ", this.state.filteredEmployees)}
+        {this.state.filteredEmployessUpdated &&
+          <ListHeader empList={this.state.filteredEmployees} />
         }
+
+
+
 
       </div>
     );

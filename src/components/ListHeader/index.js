@@ -1,16 +1,87 @@
 import React from "react";
 import "./style.css";
+import Card from '../Card';
 
-function ListHeader() {
-    return (
+class ListHeader extends React.Component {
 
-        <div className="header">
-            <div>Photo</div>
-            <div>Name </div>
-            <div>Gender</div>
-            <div>E-mail</div>
-        </div>
-    );
+    state = {
+        alphabetical: true,
+        sortedEmployees: []
+    }
+
+    sortList = () => {
+        console.log("sortList run", this.props.empList);
+        let sortEmp = [];
+        if (this.state.alphabetical) {
+            sortEmp = this.props.empList.sort((a, b) => {
+                var nameA = a[0].name.last.toLowerCase(), nameB = b[0].name.last.toLowerCase();
+                if (nameA < nameB)
+                    return -1
+                if (nameA > nameB)
+                    return 1
+                return 0
+            })
+        } else {
+            sortEmp = this.props.empList.sort((a, b) => {
+                var nameA = a[0].name.last.toLowerCase(), nameB = b[0].name.last.toLowerCase();
+                if (nameA > nameB)
+                    return -1
+                if (nameA < nameB)
+                    return 1
+                return 0
+            })
+        }
+        this.setState({
+            alphabetical: !this.state.alphabetical,
+            sortedEmployees: sortEmp
+
+        })
+    }
+
+    fillList = () => {
+        // console.log("fillList run: ", this.props.empList);
+        // console.log("sortedEmployees ", this.state.sortedEmployees);
+        // console.log("sortedEmp length", this.state.sortedEmployees.length);
+        if (this.state.sortedEmployees.length === 0) {
+            this.setState({
+                sortedEmployees: this.props.empList
+            })
+        }
+
+    }
+
+
+
+    render() {
+        return (
+
+            <div>
+                <div className="header">
+                    <div>Photo</div>
+                    <div><p onClick={this.sortList} className="name">Name</p> </div>
+                    <div>Gender</div>
+                    <div>E-mail</div>
+                </div>
+                {this.fillList()}
+                {console.log("sortedEmployees after fillList ", this.state.sortedEmployees)}
+                { // lets jsx know this is javascript
+                    this.state.sortedEmployees.map((item, index) => (
+                        //When calling components they must be in <>
+                        //The component requires props, and these must all be passed in as indicated below.
+                        <Card
+                            image={this.state.sortedEmployees[index][0].picture.large}
+                            first={this.state.sortedEmployees[index][0].name.first}
+                            last={this.state.sortedEmployees[index][0].name.last}
+                            title={this.state.sortedEmployees[index][0].name.title}
+                            gender={this.state.sortedEmployees[index][0].gender}
+                            email={this.state.sortedEmployees[index][0].email}
+                        />
+
+                    ))
+                }
+            </div>
+        );
+    }
 }
 
 export default ListHeader;
