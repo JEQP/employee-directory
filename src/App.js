@@ -1,12 +1,9 @@
 import React from 'react';
 import './App.css';
-// import employees from "./employees.json";
-import API from './utils/API';
 import axios from "axios";
-import Card from './components/Card';
 import ListHeader from './components/ListHeader';
-import Navbar from './components/Navbar';
 import SiteHead from './components/SiteHead';
+import Loader from './components/Loader';
 
 
 class App extends React.Component {
@@ -15,7 +12,8 @@ class App extends React.Component {
     employees: [],
     searchTerm: "",
     filteredEmployees: [],
-    filteredEmployessUpdated: false
+    filteredEmployessUpdated: false,
+    loadBar: 0
   };
 
   componentDidMount() {
@@ -27,10 +25,12 @@ class App extends React.Component {
           // const tempEmp = res.data;
           const entry = res.data.results;
           employees.push(entry);
+          let lb = (employees.length-1);
+          this.setState({ loadBar: lb })
           this.setState({ employees });
           this.state.employees.length > 9 &&
-          this.searchEmployees();
-          // console.log("employees: ", this.state.employees);
+            this.searchEmployees();
+          console.log("employees: ", this.state.employees);
         })
     }
   }
@@ -71,7 +71,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <SiteHead />
-        {/* <Navbar /> */}
+        <Loader loadBar = {this.state.loadBar}/>
         <form className="form">
           <input
             value={this.state.searchTerm}

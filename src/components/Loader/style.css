@@ -1,0 +1,32 @@
+.centerpiece {
+height: 20px;
+    background-color: aqua;
+    display: flex;
+    align-items: flex-end;
+    align-content: center;
+    text-align: center;
+    /* flex-direction: column; */
+    justify-content: center;
+
+}
+.loader {
+    display: grid;
+    border: 1px;
+    border-radius: 15px;
+    border-color: black;
+    grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10% ;
+    grid-template-rows: 15px; 
+    background-color: white;
+}
+
+.squarewhite {
+    width: 30;
+    height: 15px;
+    background-color: white;
+}
+
+.squaregrey {
+    width: 60px;
+    height: 15px;
+    background-color: darkslateblue;
+}

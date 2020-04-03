@@ -7,6 +7,7 @@ function SiteHead() {
     <div className = "title">
 Employee Directory
     </div>
+    <br></br>
     <div className = "tagline">
 All Relevant Information on All Employees, All the Time
     </div>
