@@ -6,11 +6,12 @@ class ListHeader extends React.Component {
 
     state = {
         alphabetical: true,
+        ascending: true,
         sortedEmployees: []
     }
 
-    sortList = () => {
-        console.log("sortList run", this.props.empList);
+    sortName = () => {
+        console.log("sortName run", this.props.empList);
         let sortEmp = [];
         if (this.state.alphabetical) {
             sortEmp = this.props.empList.sort((a, b) => {
@@ -38,6 +39,35 @@ class ListHeader extends React.Component {
         })
     }
 
+    sortAge = () => {
+        console.log("sortAge run", this.props.empList);
+        let sortEmp = [];
+        if (this.state.ascending) {
+            sortEmp = this.props.empList.sort((a, b) => {
+                var nameA = a[0].dob.age, nameB = b[0].dob.age;
+                if (nameA < nameB)
+                    return -1
+                if (nameA > nameB)
+                    return 1
+                return 0
+            })
+        } else {
+            sortEmp = this.props.empList.sort((a, b) => {
+                var nameA = a[0].dob.age, nameB = b[0].dob.age;
+                if (nameA > nameB)
+                    return -1
+                if (nameA < nameB)
+                    return 1
+                return 0
+            })
+        }
+        this.setState({
+            ascending: !this.state.alphabetical,
+            sortedEmployees: sortEmp
+
+        })
+    }
+
     fillList = () => {
         // console.log("fillList run: ", this.props.empList);
         // console.log("sortedEmployees ", this.state.sortedEmployees);
@@ -58,8 +88,10 @@ class ListHeader extends React.Component {
             <div>
                 <div className="header">
                     <div>Photo</div>
-                    <div><p onClick={this.sortList} className="name">Name</p> </div>
+                    <div><p onClick={this.sortName} className="name">Name</p> </div>
                     <div>Gender</div>
+                    <div><p onClick={this.sortAge} className="age">Age</p></div>
+                    <div>Phone</div>
                     <div>E-mail</div>
                 </div>
                 {this.fillList()}
@@ -74,6 +106,8 @@ class ListHeader extends React.Component {
                             last={this.state.sortedEmployees[index][0].name.last}
                             title={this.state.sortedEmployees[index][0].name.title}
                             gender={this.state.sortedEmployees[index][0].gender}
+                            age={this.state.sortedEmployees[index][0].dob.age}
+                            phone={this.state.sortedEmployees[index][0].cell}
                             email={this.state.sortedEmployees[index][0].email}
                         />
 

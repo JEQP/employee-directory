@@ -21,7 +21,7 @@ class App extends React.Component {
   componentDidMount() {
     for (var i = 0; i < 10; i++) {
 
-      axios.get(`https://randomuser.me/api/?inc=gender,name,email,picture`)
+      axios.get(`https://randomuser.me/api/?inc=gender,name,email,picture,dob,cell`)
         .then(res => {
           var employees = this.state.employees;
           // const tempEmp = res.data;
