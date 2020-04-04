@@ -1,52 +1,61 @@
-// import React from "react";
-// import "./style.css";
+import React from "react";
+import "./style.css";
+import ListHeader from '../ListHeader';
 
-// class Navbar extends React.Component {
+class Navbar extends React.Component {
 
-//     state = {
-//         searchTerm: "search"
-//     };
+    state = {
+        searchTerm: "",
+        filteredEmployees: []
+    };
 
-    // handleInputChange = event => {
-    //     // Getting the value and name of the input which triggered the change
-    //     const { name, value } = event.target;
-    
-    //     // Updating the input's state
-    //     this.setState({
-    //       [name]: value
-    //     });
-    //   };
-
-    //   handleFormSubmit = event => {
-    //     // Preventing the default behavior of the form submit (which is to refresh the page)
-    //     event.preventDefault();
-    //     alert(`This will run a search function`);
-
-    //     const result = words.filter(word => word.length > 6);
-    //     // this.setState({
-    //     //   searchTerm
-    //     // });
-    //   };
+    componentDidMount() {
+        if (this.state.filteredEmployees.length < 1) {
+            this.setState({
+                filteredEmployees: this.props.employees
+            })
+        }
+    }
 
 
-//     render() {
-//         return (
-//             <div>
-                // <form className="form">
-                //     <input
-                //         value={this.state.searchTerm}
-                //         name="searchTerm"
-                //         onChange={this.handleInputChange}
-                //         type="text"
-                //         placeholder="Search"
-                //     />
+    handleInputChange = event => {
+        this.setState({
+            searchTerm: event.target.value
+        });
+        let userTyped = event.target.value;
+        const filteredList = this.props.employees.filter((item) => {
+            let values = item.name.title + item.name.first + item.name.last + item.gender + item.dob.age + item.email + item.cell;
+            return values.indexOf(userTyped) !== -1;
 
-                //     <button onClick={this.handleFormSubmit}>Submit</button>
-                // </form>
-//             </div>
+        });
 
-//         );
-//     }
-// }
+        this.setState({
+            filteredEmployees: filteredList
 
-// export default Navbar;
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                {/* {this.fillList} */}
+                <form className="form">
+                    <input
+                        value={this.state.searchTerm}
+                        name="searchTerm"
+                        onChange={event => this.handleInputChange(event)}
+                        type="text"
+                        placeholder="Search"
+                    />
+                </form>
+                {this.state.filteredEmployees.length > 0 &&
+                    <ListHeader empList={this.state.filteredEmployees} />
+                }
+            </div>
+
+        );
+    }
+}
+
+
+export default Navbar;
